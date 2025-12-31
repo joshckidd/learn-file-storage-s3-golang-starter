@@ -116,7 +116,7 @@ func (cfg *apiConfig) handlerUploadVideo(w http.ResponseWriter, r *http.Request)
 	}
 	cfg.s3Client.PutObject(context.Background(), &params)
 
-	videoURL := fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s", cfg.s3Bucket, cfg.s3Region, imageFile)
+	videoURL := fmt.Sprintf("%s%s", cfg.s3CfDistribution, imageFile)
 
 	newVideo := database.Video{
 		ID:                videoID,
@@ -130,6 +130,7 @@ func (cfg *apiConfig) handlerUploadVideo(w http.ResponseWriter, r *http.Request)
 		respondWithError(w, http.StatusInternalServerError, "Database error", err)
 		return
 	}
+
 	respondWithJSON(w, http.StatusOK, newVideo)
 
 }
