@@ -76,6 +76,7 @@ func (cfg *apiConfig) handlerUploadThumbnail(w http.ResponseWriter, r *http.Requ
 		respondWithError(w, http.StatusInternalServerError, "File create error", err)
 		return
 	}
+	defer newFile.Close()
 
 	_, err = io.Copy(newFile, file)
 	if err != nil {
